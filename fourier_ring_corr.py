@@ -15,7 +15,7 @@ criteria," Journal of Structural Biology 151, 250-262 (2005)
 
 import numpy as np
 import numpy.fft as fft
-import spin_average as sa
+from . import spin_average as sa
 import matplotlib.pyplot as plt
 
 def FSC(i1,i2,disp=0,SNRt=0.1):
@@ -34,13 +34,14 @@ def FSC(i1,i2,disp=0,SNRt=0.1):
     C  = sa.spinavej(np.multiply(I1,np.conj(I2)))
     C1 = sa.spinavej(np.multiply(I1,np.conj(I1)))
     C2 = sa.spinavej(np.multiply(I2,np.conj(I2)))
-    
+
     FSC = abs(C)/np.sqrt(abs(np.multiply(C1,C2)))
-    
+    return FSC
+
     '''
     T is the SNR threshold calculated accoring to the input SNRt, if nothing is given
     a default value of 0.1 is used.
-    
+
     x2 contains the normalized spatial frequencies
     '''
     r = np.arange(1+np.shape(i1)[0]/2)
@@ -52,9 +53,9 @@ def FSC(i1,i2,disp=0,SNRt=0.1):
     t3 = SNRt + 2*np.sqrt(SNRt)*t1 + 1
     T = np.divide(t2,t3)
     x1 = np.arange(np.shape(C)[0])/(np.shape(i1)[0]/2)
-    x2 = r/(np.shape(i1)[0]/2)    
+    x2 = r/(np.shape(i1)[0]/2)
     '''
-    If the disp input is set to 1, an output plot is generated. 
+    If the disp input is set to 1, an output plot is generated.
     '''
     if disp != 0 :
         plt.plot(x1,FSC,label = 'FSC')
